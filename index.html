@@ -60,7 +60,9 @@ body::before{
 .hs-val{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(1.6rem,3.5vw,2rem);color:var(--navy);line-height:1}
 .hs-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-top:.3rem}
 .stat-sep{width:1px;height:2.25rem;background:var(--line2);align-self:center}
-.hero-contacts{display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap}
+.hero-contacts{display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap;align-items:center}
+.hero-cv-btn{display:inline-flex;align-items:center;gap:.35rem;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--card);background:var(--copper);padding:.45rem 1rem;border-radius:999px;text-decoration:none;font-weight:600;transition:background .2s;white-space:nowrap;flex-shrink:0}
+.hero-cv-btn:hover{background:var(--navy)}
 .hc{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--faint);text-decoration:none;letter-spacing:.06em;transition:color .2s}
 .hc:hover{color:var(--copper)}
 .hc-sep{color:var(--line2)}
@@ -337,7 +339,7 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
   <canvas id="hero-canvas"></canvas>
   <div class="hero-vignette"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">Business Architecture · Transformation · Programme Management · Agentic AI</div>
+    <div class="hero-eyebrow">Programme Management · Transformation · Business Architecture · Agentic AI</div>
     <h1 class="hero-name">Edgar<br><span class="last">Figueiredo</span></h1>
     <div class="hero-rotating">
       <div class="hero-rotating-inner">
@@ -353,7 +355,7 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
       <div class="stat-sep"></div>
       <div class="hs"><div class="hs-val">$1B+</div><div class="hs-lbl">Fenergo Path</div></div>
       <div class="stat-sep"></div>
-      <div class="hs"><div class="hs-val">18+</div><div class="hs-lbl">Years</div></div>
+      <div class="hs"><div class="hs-val">18+</div><div class="hs-lbl">Years Experience &amp; Growth</div></div>
     </div>
     <div class="hero-contacts">
       <a class="hc" href="mailto:gdfedgar@gmail.com">gdfedgar@gmail.com</a>
@@ -362,7 +364,7 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
       <span class="hc-sep">·</span>
       <a class="hc" href="https://wa.me/351965067681" target="_blank" title="WhatsApp">+351 96 506 7681</a>
       <span class="hc-sep">·</span>
-      <a class="hc" href="https://linkedin.com" target="_blank">LinkedIn ↗</a>
+      <a class="hc" href="https://www.linkedin.com/in/edgar-figueiredo/" target="_blank">LinkedIn ↗</a>
     </div>
   </div>
   <div class="scroll-hint">
@@ -392,11 +394,11 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
 
     <div class="stat-row">
       <div class="stat-card"><div class="sc-val">$15M</div><div class="sc-lbl">Portfolio Under Governance</div></div>
-      <div class="stat-card"><div class="sc-val">4 Regions</div><div class="sc-lbl">Global Outreach</div></div>
+      <div class="stat-card"><div class="sc-val">Global</div><div class="sc-lbl">Cross-Regions &amp; Teams</div></div>
       <div class="stat-card"><div class="sc-val">$3.2M</div><div class="sc-lbl">Consolidation Programme</div></div>
       <div class="stat-card"><div class="sc-val">$1.8M</div><div class="sc-lbl">Recurring Annual Savings</div></div>
       <div class="stat-card"><div class="sc-val">$3.8M</div><div class="sc-lbl">Tax Reporting Model</div></div>
-      <div class="stat-card"><div class="sc-val">3+</div><div class="sc-lbl">Senior PMs Managed &amp; Coached</div></div>
+      <div class="stat-card"><div class="sc-val">3+</div><div class="sc-lbl">Senior PMs Managing &amp; Coaching</div></div>
     </div>
 
     <div class="sub-title">Key Programmes and Projects</div>
@@ -815,7 +817,7 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
             <span class="tl-badge enrolled">Currently Enrolled</span>
           </div>
           <div class="tl-item" data-cert="tcd" style="cursor:pointer">
-            <div class="tl-year">2015 – 2016</div>
+            <div class="tl-year">2015 – 2017</div>
             <div class="tl-title">PG Diploma, Management of Information Systems</div>
             <div class="tl-org">Trinity College Dublin · Level 9</div>
             <span class="tl-badge honours">First Class Honours</span>
@@ -973,26 +975,6 @@ document.addEventListener("contextmenu",function(e){
   e.preventDefault();
 });
 document.addEventListener("keydown",function(e){if(e.ctrlKey&&["s","u"].indexOf(e.key.toLowerCase())>-1){e.preventDefault();return false;}if(e.key==="F12"){e.preventDefault();return false;}});
-
-/* ===== CAROUSEL fallback (JS-driven so it works even where CSS animation stalls, e.g. WhatsApp webview) ===== */
-(function(){
-  var inner=document.querySelector('.hero-rotating-inner');
-  if(!inner) return;
-  var lines=inner.querySelectorAll('.hero-rotating-line');
-  if(lines.length<2) return;
-  // Detect if CSS animation is actually running; if not, drive it manually.
-  var isNarrow=window.matchMedia('(max-width:540px)').matches;
-  if(isNarrow) return; // narrow screens show first line statically by design
-  var idx=0;
-  // Force JS control for consistency across webviews
-  inner.style.animation='none';
-  inner.style.transition='transform .6s ease';
-  function step(){
-    idx=(idx+1)%lines.length;
-    inner.style.transform='translateY(-'+(idx*3)+'em)';
-  }
-  setInterval(step,3000);
-})();
 
 /* HERO CANVAS */
 (function(){
