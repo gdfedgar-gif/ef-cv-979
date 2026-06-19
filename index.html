@@ -189,6 +189,12 @@ body::before{
 .step-name{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;color:var(--navy);margin-bottom:.5rem;line-height:1.1}
 .step-desc{font-size:12.5px;color:var(--soft);line-height:1.55;margin-bottom:.75rem}
 .step-ai{font-size:10.5px;color:var(--copper);font-family:'IBM Plex Mono',monospace;padding:.25rem .55rem;background:var(--copper-dim);border-radius:4px;border:1px solid var(--copper-soft);display:inline-block}
+.step-applied{margin-top:.85rem;padding-top:.75rem;border-top:1px dashed var(--line)}
+.step-applied-label{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--copper);margin-bottom:.35rem;display:block}
+.step-applied-text{font-size:11.5px;color:var(--soft);line-height:1.55}
+.poc-bullets{list-style:none;margin-top:.75rem;display:flex;flex-direction:column;gap:.4rem}
+.poc-bullets li{font-size:12.5px;color:var(--soft);line-height:1.55;padding-left:1.1rem;position:relative}
+.poc-bullets li::before{content:'·';position:absolute;left:0;color:var(--copper);font-size:16px;top:-2px}
 
 /* case study grid */
 .case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
@@ -344,12 +350,12 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
     <div class="hero-rotating">
       <div class="hero-rotating-inner">
         <span class="hero-rotating-line">Operating Models &amp; Agentic AI · Financial Services</span>
-        <span class="hero-rotating-line">Translating enterprise AI into governed, auditable production</span>
+        <span class="hero-rotating-line">Translating enterprise AI toward governed, auditable production</span>
         <span class="hero-rotating-line">18+ years regulated transformation · Citi · Fenergo · Barclays</span>
       </div>
     </div>
     <div class="hero-stats">
-      <div class="hs"><div class="hs-val">$15M</div><div class="hs-lbl">Portfolio Governed</div></div>
+      <div class="hs"><div class="hs-val">$15M</div><div class="hs-lbl">Portfolio Under Governance</div></div>
       <div class="stat-sep"></div>
       <div class="hs"><div class="hs-val">$3.8M</div><div class="hs-lbl">Tax Ops Delivered</div></div>
       <div class="stat-sep"></div>
@@ -404,7 +410,7 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
     <div class="sub-title">Key Programmes and Projects</div>
     <ul class="prog-list">
       <li class="prog-cat">Transformation &amp; New Target Operating Models</li>
-      <li class="prog-item"><span class="prog-dot"></span><span class="prog-body"><strong>FMI Strategic Transformation:</strong> Policy simplification, credit exposure frameworks, risk scorecards and governance aligned to regulatory policy.</span></li>
+      <li class="prog-item"><span class="prog-dot"></span><span class="prog-body"><strong>FMI Strategic Transformation (current):</strong> Policy simplification, credit exposure frameworks, risk scorecards and governance aligned to regulatory policy.</span></li>
       <li class="prog-item"><span class="prog-dot"></span><span class="prog-body"><strong>$3.8M Tax Information Reporting New Operating Model:</strong> Global FATCA/CRS operating model delivered end-to-end. Secured executive funding through business case and TOM design.</span></li>
       <li class="prog-item"><span class="prog-dot"></span><span class="prog-body"><strong>Agentic FATCA/CRS POC:</strong> Designed and built ahead of Citi Arc launch. Full use case, HITL design, MRM governance and benefits model, positioned for production scale on Citi Arc from April 2026.</span></li>
 
@@ -459,7 +465,11 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
       </div>
       <div class="card">
         <div class="card-title">External Partners Managed Alongside</div>
-        <div class="card-body">S&amp;P · Thomson Reuters · Sovos and other major systems integrators in complex multi-vendor regulated delivery environments.</div>
+        <div class="card-body" style="margin-bottom:.75rem">Operates in mixed-vendor delivery environments, coordinating scope, accountability and technical integration across external data and technology providers alongside internal teams.</div>
+        <div class="tag-group" style="margin-top:0">
+          <span class="tag">S&amp;P</span><span class="tag">Thomson Reuters</span>
+          <span class="tag">Sovos</span><span class="tag">Systems Integrators</span>
+        </div>
       </div>
     </div>
   </div>
@@ -472,72 +482,45 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
     <h2 class="s-title">Transformation &amp; Agentic AI</h2>
     <p class="s-desc">The bottleneck in deploying AI inside regulated institutions is not the technology. It is the ability to identify where a capability belongs inside an operating model, convert it into a governed use case with a quantified outcome, and scale capacity without proportional workforce growth. Governance is designed before any agent is built.</p>
 
-    <div class="sub-title">AI Transformation Approach · Ongoing</div>
-    <p style="font-size:13.5px;color:var(--soft);max-width:700px;line-height:1.75;margin-bottom:1.5rem">Agentic AI is new and the field is still in discovery. The approach below is live and evolving: converting emerging AI capability into commercial outcomes inside regulated institutions, with every engagement scoped around measurable value, governed before it is built, and designed for production scale from the outset.</p>
+    <div class="sub-title">The Transformation Method · Live &amp; Evolving</div>
+    <p style="font-size:13.5px;color:var(--soft);max-width:700px;line-height:1.75;margin-bottom:1.5rem">Agentic AI is new and the field is still in active discovery. The method below is a structured, repeatable approach for converting emerging AI capability into governed, commercial outcomes inside regulated institutions, sequential and deliberate: governance designed before code is written, value evidenced before scale is approved. Each step pairs the principle with how it played out on a live programme.</p>
 
-    <div class="steps-grid" style="margin-bottom:1rem">
-      <div class="card">
-        <div class="card-title">Commercial Use Case Design</div>
-        <div class="card-body">Scoping agentic AI use cases against high-value operational problems with quantified commercial outcomes: effort reduction, cycle time compression and elimination of manual processing at scale. Each use case is built with a full benefit realisation model before a line of code is written, and a business case designed for MD-level approval. Revenue growth comes from the capacity freed by intelligent automation.</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Future-State Target Operating Models</div>
-        <div class="card-body">Designing target states where agentic pipelines absorb volume growth, new regulatory obligations and market complexity without proportional workforce expansion. The target is a production-grade operating model embedded into day-to-day operations, not an isolated pilot. AI is built into the business architecture from the outset, not retrofitted.</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Governance as Deployment Condition</div>
-        <div class="card-body">In regulated institutions, AI deployability is a governance problem before it is a technology problem. Autonomy taxonomies, MRM frameworks and audit trail design are completed before any agent is built. This produces use cases that governance forums can approve, developers can build and regulators can audit: the conditions for moving from POC to production.</div>
-      </div>
-    </div>
-    <div class="two-col" style="margin-bottom:2rem">
-      <div class="card">
-        <div class="card-title">From POC to Enterprise Scale</div>
-        <div class="card-body">Building governed POCs ahead of enterprise platform availability. The FATCA/CRS agentic pipeline was designed, governed and evidenced before Citi Arc launched in April 2026; when the platform arrived, enterprise adoption became a deployment decision rather than a new project. The model: design, govern and evidence the use case so it is production-ready the moment the platform layer exists.</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Embedding AI into Delivery Practice</div>
-        <div class="card-body">AI adoption happens at the programme level, not the platform layer. Coaching MD and Director-level stakeholders on agentic design principles, embedding AI lenses into programme charters and assessing existing RPA estates for agent replacement. Every programme is evaluated for its AI potential as discovery continues across the industry.</div>
-      </div>
-    </div>
-
-    <div class="sub-title">The 6-Step Transformation Path</div>
-    <p style="font-size:13.5px;color:var(--soft);max-width:680px;line-height:1.75;margin-bottom:1.5rem">A structured, repeatable approach for deploying agentic AI inside regulated institutions. Sequential and deliberate: governance designed before code is written, value evidenced before scale is approved.</p>
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-num">01 / IDENTIFY</div>
         <div class="step-name">Find the Right Process</div>
-        <div class="step-desc">High volume, rule-bound, structured data inputs and measurable outputs are the hallmarks of a strong agentic candidate. Quantify current-state FTE, cycle time, error rates and manual handoffs.</div>
-        <span class="step-ai">Current-state process mapping</span>
+        <div class="step-desc">High volume, rule-bound processes with structured inputs and measurable outputs are strong agentic candidates. Quantify current-state FTE, cycle time and manual handoffs before scoping a use case with an MD-ready business case.</div>
+        <div class="step-applied"><span class="step-applied-label">Applied at Citi</span><div class="step-applied-text">FATCA/CRS validation: ~3M annual forms, 93 jurisdiction schemas, ~100 FTE of manual review.</div></div>
       </div>
       <div class="step-card">
         <div class="step-num">02 / DESIGN</div>
         <div class="step-name">Define the Target Operating Model</div>
-        <div class="step-desc">Map agent responsibilities, data flows, HITL thresholds and the boundary between automated decisions and human judgement. The TOM is the deliverable, not the code.</div>
-        <span class="step-ai">Agent role and boundary design</span>
+        <div class="step-desc">Map agent responsibilities, data flows and the human/automation boundary. The TOM is the deliverable, not the code; AI is built into the operating model from the outset, not retrofitted.</div>
+        <div class="step-applied"><span class="step-applied-label">Applied at Citi</span><div class="step-applied-text">End-to-end pipeline designed: document intelligence, HITL exception review, cross-LOB reconciliation, schema-aware reporting.</div></div>
       </div>
       <div class="step-card">
         <div class="step-num">03 / GOVERN</div>
         <div class="step-name">Build Governance Before Code</div>
-        <div class="step-desc">Establish the autonomy taxonomy, MRM framework and audit trail design before writing a line of code. Governance is the condition for deployment inside any regulated institution.</div>
-        <span class="step-ai">MRM framework · Autonomy taxonomy</span>
+        <div class="step-desc">In regulated institutions, AI deployability is a governance problem before it is a technology problem. Autonomy taxonomy, MRM framework and audit trail are designed before any agent is built, never retrofitted.</div>
+        <div class="step-applied"><span class="step-applied-label">Applied at Citi</span><div class="step-applied-text">Happy-path automation, HITL exception layer, human-only for regulated filings. Full audit trail built into the architecture.</div></div>
       </div>
       <div class="step-card">
         <div class="step-num">04 / BUILD</div>
-        <div class="step-name">Develop the Agentic Pipeline</div>
-        <div class="step-desc">Document intelligence, multi-agent orchestration, HITL validation layer. Prove the architecture and surface edge cases at POC stage before committing to production scale.</div>
-        <span class="step-ai">n8n · Claude Code · Orchestration</span>
+        <div class="step-name">Develop the Pipeline</div>
+        <div class="step-desc">Document intelligence and multi-agent orchestration replace brittle per-layout RPA bots, which break whenever a form layout changes. Prove the architecture and surface edge cases at POC stage before committing to scale.</div>
+        <div class="step-applied"><span class="step-applied-label">Applied at Citi</span><div class="step-applied-text">n8n orchestration layer, HITL validation interface, cross-LOB reconciliation automated; edge cases surfaced and resolved.</div></div>
       </div>
       <div class="step-card">
         <div class="step-num">05 / EVIDENCE</div>
         <div class="step-name">Quantify the Business Case</div>
-        <div class="step-desc">Model cycle time reduction, effort reduction and exception rates from POC data. Secure executive funding based on evidence from the pipeline, not projection from a slide deck.</div>
-        <span class="step-ai">Benefits modelling · Exec approval</span>
+        <div class="step-desc">Model cycle-time and effort reduction from POC data, not slide-deck projection. Secure executive funding on evidence the pipeline has already produced, not a forecast.</div>
+        <div class="step-applied"><span class="step-applied-label">Applied at Citi</span><div class="step-applied-text">70-85% effort reduction modelled; validation cycle 2 days to ~1 hour. Business case and sponsorship secured.</div></div>
       </div>
       <div class="step-card">
         <div class="step-num">06 / SCALE</div>
         <div class="step-name">Deploy at Enterprise Scale</div>
-        <div class="step-desc">Move from POC to enterprise production via the platform layer. Maintain governance integrity, absorb volume growth without proportional headcount, and embed into ongoing delivery.</div>
-        <span class="step-ai">Enterprise platform · Citi Arc</span>
+        <div class="step-desc">Move from POC to enterprise production via the platform layer, maintaining governance integrity and absorbing volume growth without proportional headcount.</div>
+        <div class="step-applied"><span class="step-applied-label">Applied at Citi</span><div class="step-applied-text">Citi Arc launched April 2026; the governed POC is positioned for production across all 93 jurisdictions.</div></div>
       </div>
     </div>
 
@@ -545,64 +528,47 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
     <div class="poc-card">
       <div class="poc-title">FATCA/CRS Agentic Validation Pipeline</div>
       <div class="poc-meta">Citi · POC Delivered · Production on Citi Arc from April 2026</div>
-      <div class="poc-body">Designed a full agentic Target Operating Model for FATCA/CRS tax form validation and reporting process automation: a process handling approximately 3 million annual forms and reporting files across 93 jurisdiction schemas, previously staffed by approximately 100 FTE performing manual PDF review, field re-keying into vendor applications and cross-system reconciliation. Designed the end-to-end pipeline: document intelligence and reasoning replacing brittle per-layout RPA bots, a supervised HITL validation layer, automated cross-LOB data reconciliation and jurisdiction-schema-aware reporting file preparation. Built as a POC and business case ahead of Citi's enterprise agentic AI infrastructure.</div>
+      <div class="poc-body">Designed a full agentic Target Operating Model for FATCA/CRS tax form validation and reporting, replacing a ~100-FTE manual process spanning 93 jurisdiction schemas.</div>
+      <ul class="poc-bullets">
+        <li>Document intelligence and reasoning replaced brittle per-layout RPA bots prone to breaking on form changes.</li>
+        <li>Supervised HITL validation layer with automated cross-LOB data reconciliation.</li>
+        <li>Jurisdiction-schema-aware reporting file preparation across all 93 schemas.</li>
+        <li>Built as a POC and business case ahead of Citi's enterprise agentic infrastructure; positioned for production on Citi Arc from April 2026.</li>
+      </ul>
       <div class="poc-stats">
         <div><div class="poc-stat-val">2 days to 1 hour</div><div class="poc-stat-lbl">Validation Cycle Time</div></div>
         <div><div class="poc-stat-val">70-85%</div><div class="poc-stat-lbl">Line Effort Reduction</div></div>
         <div><div class="poc-stat-val">~100 FTE</div><div class="poc-stat-lbl">Manual Process</div></div>
         <div><div class="poc-stat-val">93 schemas</div><div class="poc-stat-lbl">Single Pipeline</div></div>
       </div>
+      <div class="tag-group" style="margin-top:1.1rem">
+        <span class="tag">Agentic TOM Design</span><span class="tag">Document Intelligence</span>
+        <span class="tag">HITL Design</span><span class="tag">MRM Scoping</span>
+        <span class="tag">n8n</span><span class="tag">Claude Code</span>
+      </div>
     </div>
 
     <div class="poc-card">
       <div class="poc-title">AI-Assisted Regulatory Gap Analysis</div>
       <div class="poc-meta">New-Market Banking Licence Programme · Methodology Adopted Programme-Wide</div>
-      <div class="poc-body">Supported a Risk PMO function on a new-market banking licence application requiring full compliance mapping between host-country banking regulations and internal risk policy across credit risk, operational risk, liquidity/market risk and model risk management. The prior approach depended entirely on individual SME judgement reading every regulation clause by clause, with no structured registry and no consistent way to classify coverage or flag gaps. In partnership with a risk subject-matter expert, designed a structured AI prompt directing the model to act as a regulatory compliance analyst: extract every regulatory requirement at clause and sub-clause level into a standardised registry, map each against internal policy, and classify coverage (Fully Covered / Partially Covered / Not Covered / Inconsistent / Ambiguous) with a confidence rating and line-of-defence ownership tagging. Built-in guardrails prohibit fabricating requirements or proceeding without source documents, and route conflicting or ambiguous findings to an escalation log rather than resolving them silently. The approach was subsequently refined and formally adopted as the standard methodology across the wider programme.</div>
+      <div class="poc-body">Designed an AI-powered framework that identifies regulatory gaps at clause level in approximately 10 minutes per regulation, down from a day of manual SME review. Every AI-identified gap is then reviewed by a Risk Manager, who approves the finding before it is logged; AI accelerates identification, the human retains the decision.</div>
+      <ul class="poc-bullets">
+        <li>Structured prompt directs the model to extract every regulatory requirement at clause and sub-clause level into a standardised registry.</li>
+        <li>Each requirement mapped against internal policy and classified (Fully Covered / Partially Covered / Not Covered / Inconsistent / Ambiguous) with a confidence rating and line-of-defence tagging.</li>
+        <li>Built-in guardrails prohibit the model from fabricating requirements or proceeding without source documents; every finding is routed to a Risk Manager for review and approval rather than auto-resolved.</li>
+        <li>Refined and adopted as the standard methodology across the wider programme. The approach mirrors a capability category now being productized by major advisory firms and specialist compliance-AI platforms as dedicated automated gap-analysis tools.</li>
+      </ul>
       <div class="poc-stats">
-        <div><div class="poc-stat-val">1 day to ~10 min</div><div class="poc-stat-lbl">Per-Regulation Review</div></div>
+        <div><div class="poc-stat-val">1 day to ~10 min</div><div class="poc-stat-lbl">Per-Regulation Gap ID</div></div>
         <div><div class="poc-stat-val">~200 reqs</div><div class="poc-stat-lbl">Mapped to ~40 Policies</div></div>
         <div><div class="poc-stat-val">5-tier</div><div class="poc-stat-lbl">Coverage Classification</div></div>
+        <div><div class="poc-stat-val">100%</div><div class="poc-stat-lbl">Risk Manager Reviewed &amp; Approved</div></div>
         <div><div class="poc-stat-val">Programme-Wide</div><div class="poc-stat-lbl">Methodology Adopted</div></div>
       </div>
       <div class="tag-group" style="margin-top:1.1rem">
         <span class="tag">Claude</span><span class="tag">Gemini</span>
         <span class="tag">Prompt Engineering</span><span class="tag">Structured Data Design</span>
         <span class="tag">Risk Governance</span><span class="tag">Hallucination Guardrails</span>
-        <span class="tag">Escalation Design</span>
-      </div>
-    </div>
-
-    <div class="sub-title">Applied: FATCA / CRS Use Case</div>
-    <div class="case-grid">
-      <div class="case-card">
-        <div class="case-num">01 / IDENTIFY</div>
-        <div class="case-step">The Candidate Process</div>
-        <div class="case-body">3M annual forms, 93 jurisdiction schemas, ~100 FTE of manual PDF review and re-keying. 2-day cycle time dominated by queue time and handoffs. Per-layout RPA bots breaking on form changes.</div>
-      </div>
-      <div class="case-card">
-        <div class="case-num">02 / DESIGN</div>
-        <div class="case-step">Target Operating Model</div>
-        <div class="case-body">End-to-end pipeline designed: document ingestion, AI reasoning layer, HITL exception review, cross-LOB data reconciliation and jurisdiction-schema-aware reporting file preparation.</div>
-      </div>
-      <div class="case-card">
-        <div class="case-num">03 / GOVERN</div>
-        <div class="case-step">Autonomy Taxonomy</div>
-        <div class="case-body">Happy-path auto-processing, HITL exception review layer, human-only for final regulated filings. MRM framework designed. Governance built before any agent. Audit trail designed into architecture.</div>
-      </div>
-      <div class="case-card">
-        <div class="case-num">04 / BUILD</div>
-        <div class="case-step">Pipeline POC</div>
-        <div class="case-body">Document intelligence replacing brittle per-layout RPA bots. n8n orchestration layer. HITL validation interface. Cross-LOB data reconciliation automated. Edge cases surfaced and resolved.</div>
-      </div>
-      <div class="case-card">
-        <div class="case-num">05 / EVIDENCE</div>
-        <div class="case-step">Business Case Secured</div>
-        <div class="case-body">70-85% effort reduction modelled from POC data. Validation cycle: 2 days to 1 hour. Business case and executive sponsorship secured. Programme funding approved.</div>
-      </div>
-      <div class="case-card">
-        <div class="case-num">06 / SCALE</div>
-        <div class="case-step">Production via Citi Arc</div>
-        <div class="case-body">Citi Arc, the enterprise agentic AI platform, launched April 2026. The governed POC pipeline is positioned for production deployment across all 93 jurisdictions.</div>
       </div>
     </div>
 
@@ -721,6 +687,7 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
           <ul class="exp-bullets">
             <li><strong>Executive Advisory:</strong> Converted vision into strategy and delivery roadmaps. Secured approval for multiple multi-million-dollar programmes through business cases, benefit realisation models and Target Operating Model proposals that withstand MD and Director-level scrutiny.</li>
             <li><strong>Agentic AI Use Case Design:</strong> Designed a full agentic Target Operating Model for FATCA/CRS tax form validation across 3M annual forms, 93 jurisdiction schemas and approximately 100 FTE of manual processing. Modelled benefits: cycle time 2 days to 1 hour; 70–85% line-effort reduction. Built as POC ahead of Citi Arc launch (April 2026).</li>
+            <li><strong>AI-Assisted Regulatory Gap Analysis:</strong> Designed an AI-powered framework (Claude, Gemini) that identifies regulatory gaps at clause level in approximately 10 minutes per regulation, down from a day of manual review, across ~200 requirements for a multi-jurisdictional banking licence programme. Every AI-identified gap is reviewed and approved by a Risk Manager before being logged; methodology adopted programme-wide.</li>
             <li><strong>Regulatory Delivery:</strong> Established second-line Risk Management frameworks across new jurisdictions, end-to-end regulatory submissions, technology implementations and operational readiness.</li>
             <li><strong>FMI Transformation:</strong> Led Financial Market Infrastructure strategic transformation covering policy simplification, credit exposure frameworks and risk scorecards.</li>
             <li><strong>Technology Bridge:</strong> Closed the gap between executive strategy and technical delivery, operating alongside S&amp;P, Thomson Reuters and Sovos in mixed-vendor environments.</li>
@@ -729,7 +696,8 @@ footer p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint
             <div class="exp-tags">
               <span class="exp-tag">$15M Portfolio</span><span class="exp-tag">FATCA / CRS</span>
               <span class="exp-tag">FMI</span><span class="exp-tag">SWIFT ISO 20022</span>
-              <span class="exp-tag">Agentic AI</span><span class="exp-tag">SAFe</span><span class="exp-tag">Scrum</span>
+              <span class="exp-tag">Agentic AI</span><span class="exp-tag">AI-Assisted Compliance</span>
+              <span class="exp-tag">SAFe</span><span class="exp-tag">Scrum</span>
             </div>
           </div>
         </div>
