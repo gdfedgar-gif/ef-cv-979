@@ -1,13 +1,287 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Use Case</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent Delivery Lifecycle · Planet · Edgar Figueiredo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F6FA;--card:#fff;--navy:#1B2B4D;--navy2:#2E4270;--blue:#2E5FA3;--blue-dim:rgba(46,95,163,.09);--blue-soft:#C8D8F0;--eng:#2C7A4B;--eng-dim:rgba(44,122,75,.09);--eng-soft:#C0DCCC;--copper:#B0682C;--cop-dim:rgba(176,104,44,.09);--cop-soft:#EBD7C0;--line:#E2E8F0;--text:#1A1F2E;--soft:#52596B;--faint:#8A90A0;--gold:#C99A4B;--rust:#9C3A2D;--rust-dim:rgba(156,58,45,.08);--rust-soft:#ECD3CD;--green:#22C55E}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* HEADER */
+.site-header{background:var(--navy);padding:2rem 2.5rem 1.75rem}
+.header-inner{max-width:1200px;margin:0 auto}
+.header-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:.6rem}
+.header-title{font-family:'Fraunces',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.header-title em{color:var(--gold);font-style:italic}
+.header-meta{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-top:.9rem}
+.meta-chip{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.05em;color:rgba(255,255,255,.58);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);border-radius:20px;padding:.22rem .7rem}
+.meta-chip.live{color:#6EE7A8;background:rgba(110,231,168,.1);border-color:rgba(110,231,168,.24)}
+/* CONTEXT BAR */
+.context-bar{background:var(--navy2);padding:.7rem 2.5rem}
+.context-inner{max-width:1200px;margin:0 auto;display:flex;gap:1.75rem;flex-wrap:wrap;align-items:center}
+.ctx-stat{display:flex;flex-direction:column}
+.ctx-val{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--gold);line-height:1}
+.ctx-label{font-family:'IBM Plex Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.38);margin-top:.2rem}
+.ctx-sep{width:1px;height:26px;background:rgba(255,255,255,.11)}
+/* DOMAINS BAR */
+.domains-bar{background:rgba(27,43,77,.05);border-bottom:1px solid var(--line);padding:.55rem 2.5rem}
+.domains-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.domain-label{font-family:'IBM Plex Mono',monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--faint);margin-right:.2rem}
+.domain-chip{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--navy2);background:rgba(46,66,112,.07);border:1px solid rgba(46,66,112,.16);border-radius:20px;padding:.2rem .65rem}
+/* LEGEND */
+.legend-bar{background:var(--card);border-bottom:1px solid var(--line);padding:.65rem 2.5rem}
+.legend-inner{max-width:1200px;margin:0 auto;display:flex;gap:1.4rem;align-items:center;flex-wrap:wrap}
+.legend-label{font-family:'IBM Plex Mono',monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)}
+.legend-item{display:flex;align-items:center;gap:.4rem;font-size:12px;color:var(--soft);font-weight:500}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.dot-biz{background:var(--blue)}.dot-eng{background:var(--eng)}.dot-ai{background:var(--copper)}
+/* STEP RAIL */
+.step-rail{max-width:1200px;margin:2rem auto 0;padding:0 2.5rem;display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;position:relative}
+.step-rail::before{content:'';position:absolute;top:22px;left:calc(2.5rem + 7%);right:calc(2.5rem + 7%);height:2px;background:var(--line);z-index:0}
+.step-btn{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:.45rem;cursor:pointer;padding:.5rem .25rem;border-radius:8px;border:none;background:none;transition:background .15s}
+.step-btn:hover{background:rgba(27,43,77,.05)}
+.step-circle{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:var(--faint);transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.06);position:relative}
+.step-label{font-family:'IBM Plex Sans',sans-serif;font-size:10.5px;font-weight:600;color:var(--faint);text-align:center;line-height:1.3;transition:color .2s}
+.step-btn.active .step-circle{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 0 0 4px rgba(27,43,77,.12)}
+.step-btn.active .step-label{color:var(--navy)}
+.step-btn.done .step-circle{background:var(--blue-dim);border-color:var(--blue-soft);color:var(--blue)}
+.step-btn.done .step-label{color:var(--blue)}.step-btn.pending .step-circle{background:rgba(201,154,75,.07);border:2px dashed var(--gold);color:var(--gold)}.step-btn.pending .step-label{color:var(--gold)}
+.live-badge{position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid var(--card);animation:pulse-live 2s infinite}
+@keyframes pulse-live{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{box-shadow:0 0 0 5px rgba(34,197,94,0)}}
+/* DETAIL PANEL */
+.detail-wrap{max-width:1200px;margin:1.5rem auto 3rem;padding:0 2.5rem}
+.detail-panel{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.05)}
+.panel-header{display:flex;align-items:flex-start;gap:1.5rem;padding:1.75rem 2rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.1);background:var(--navy)}
+.panel-num{font-family:'Fraunces',serif;font-size:3rem;font-weight:700;color:rgba(255,255,255,.12);line-height:1;flex-shrink:0;min-width:56px}
+.panel-title-block{flex:1}
+.panel-phase{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
+.panel-title{font-family:'Fraunces',serif;font-size:1.55rem;font-weight:700;color:#fff;line-height:1.1;margin-bottom:.4rem}
+.panel-tagline{font-size:12.5px;color:rgba(255,255,255,.55);font-style:italic}
+.panel-status{display:inline-flex;align-items:center;gap:.35rem;font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;margin-top:.55rem}
+.panel-desc{font-size:13px;line-height:1.72;color:rgba(255,255,255,.68);max-width:700px;margin-top:.7rem}
+/* Columns */
+.panel-cols{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--line)}
+.col-block{padding:1.4rem 1.6rem;border-right:1px solid var(--line)}
+.col-block:last-child{border-right:none}
+.col-header{display:flex;align-items:center;gap:.45rem;margin-bottom:.9rem}
+.col-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.col-name{font-family:'IBM Plex Mono',monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.14em;font-weight:500}
+.col-biz .col-name{color:var(--blue)}.col-eng .col-name{color:var(--eng)}.col-head .col-name{color:var(--copper)}
+.col-items{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.col-items li{font-size:12px;line-height:1.6;color:var(--soft);padding-left:1rem;position:relative}
+.col-items li::before{content:'·';position:absolute;left:0;font-size:1.1rem;line-height:1.3}
+.col-biz .col-items li::before{color:var(--blue)}.col-eng .col-items li::before{color:var(--eng)}.col-head .col-items li::before{color:var(--copper)}
+.col-items li strong{font-weight:600;color:var(--text);display:block;font-size:11px;margin-bottom:.08rem}
+/* KPIs */
+.kpi-section{padding:1.1rem 1.6rem 1.4rem;border-bottom:1px solid var(--line)}
+.kpi-heading{font-family:'IBM Plex Mono',monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--faint);margin-bottom:.8rem}
+.kpi-grid{display:flex;flex-wrap:wrap;gap:.45rem}
+.kpi-chip{display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:.45rem .8rem;min-width:130px}
+.kpi-chip.highlight{border-left:3px solid var(--navy);background:rgba(27,43,77,.04)}
+.kpi-val{font-family:'Fraunces',serif;font-size:.95rem;font-weight:700;color:var(--navy);line-height:1;margin-bottom:.18rem}
+.kpi-label{font-family:'IBM Plex Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.07em;color:var(--faint)}
+/* RISK BLOCK */
+.risk-section{padding:1.1rem 1.6rem 1.4rem;border-bottom:1px solid var(--line);background:rgba(27,43,77,.02)}
+.risk-heading{font-family:'IBM Plex Mono',monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--faint);margin-bottom:.85rem}
+.tier-row{display:flex;gap:.6rem;margin-bottom:.85rem;flex-wrap:wrap}
+.tier-chip{flex:1;min-width:160px;border-radius:7px;padding:.75rem 1rem;border:1.5px solid var(--line);position:relative}
+.tier-chip.t3{background:rgba(139,139,139,.05);border-color:#D0D5DD}
+.tier-chip.t2{background:rgba(201,154,75,.06);border-color:var(--cop-soft)}
+.tier-chip.t1a{background:rgba(156,58,45,.06);border-color:var(--rust-soft);border-left:3px solid var(--rust)}
+.tier-num{font-family:'IBM Plex Mono',monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);display:block;margin-bottom:.2rem}
+.t1a .tier-num{color:var(--rust)}
+.tier-name{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:.15rem}
+.tier-action{font-size:11px;color:var(--soft);display:block}
+.t1a .tier-action{color:var(--rust);font-weight:500}
+.tier-this{display:inline-block;margin-top:.4rem;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--rust);border-radius:3px;padding:.15rem .45rem}
+.oversight-row{display:flex;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap}
+.ov-chip{flex:1;min-width:150px;padding:.55rem .85rem;border-radius:6px;border:1px solid var(--line);background:var(--bg)}
+.ov-chip.ov-on{border-color:var(--eng-soft);background:var(--eng-dim)}
+.ov-chip.ov-out{border-color:var(--rust-soft);background:var(--rust-dim);opacity:.7}
+.ov-name{font-family:'IBM Plex Sans',sans-serif;font-size:11.5px;font-weight:600;color:var(--soft);display:block;margin-bottom:.15rem}
+.ov-chip.ov-on .ov-name{color:var(--eng)}.ov-chip.ov-out .ov-name{color:var(--rust)}
+.ov-desc{font-size:11px;color:var(--faint);line-height:1.5}
+.ov-chip.ov-on .ov-desc{color:var(--soft)}
+.ov-applied{display:block;margin-top:.3rem;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--eng)}
+.risk-rationale{font-size:11.5px;line-height:1.65;color:var(--soft);background:rgba(27,43,77,.04);border-left:3px solid var(--navy);border-radius:0 5px 5px 0;padding:.65rem .9rem}
+.risk-rationale strong{color:var(--navy);font-weight:600}
+/* NAV */
+.panel-nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.6rem;background:var(--bg)}
+.nav-btn{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;color:var(--navy);background:none;border:1px solid var(--line);border-radius:6px;padding:.4rem .95rem;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:background .15s,border-color .15s}
+.nav-btn:hover{background:var(--card);border-color:var(--navy)}.nav-btn:disabled{opacity:.3;cursor:default}
+.nav-progress{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint);letter-spacing:.1em}
+.foot-note{max-width:1200px;margin:0 auto 2rem;padding:0 2.5rem;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--faint);letter-spacing:.04em;text-align:center}
+/* Responsive */
+@media(max-width:860px){.panel-cols{grid-template-columns:1fr}.col-block{border-right:none;border-bottom:1px solid var(--line)}.step-rail{grid-template-columns:repeat(4,1fr)}.step-rail::before{display:none}.site-header,.context-bar,.domains-bar,.legend-bar,.detail-wrap,.step-rail,.foot-note{padding-left:1rem;padding-right:1rem}.panel-header{flex-direction:column;gap:.65rem}.tier-row,.oversight-row{flex-direction:column}}
+@media(max-width:480px){.step-circle{width:36px;height:36px;font-size:10px}.step-label{font-size:9px}.step-rail{grid-template-columns:repeat(4,1fr);gap:.3rem}}
+</style>
 </head>
 <body>
-    <h1>Project Use Case</h1>
-    <p>Detail your amazing use case or project right here...</p>
 
-    <!-- Link back to your CV -->
-    <a href="index.html">← Back to CV</a>
+<header class="site-header">
+  <div class="header-inner">
+    <h1 class="header-title">AI Agent Delivery Lifecycle<br><em>Proof of Practice: Citi Tax Agentic Validation</em></h1>
+    <div class="header-meta">
+      <span class="meta-chip">FATCA / CRS Tax Withholding Forms</span>
+      <span class="meta-chip">Citi, Tax Operations &middot; Dublin</span>
+      <span class="meta-chip">2024 &ndash; Ongoing</span>
+      <span class="meta-chip live">&#9679; Steps 1&ndash;5 Complete &middot; Steps 6&ndash;7 Pending (Citi Arc)</span>
+    </div>
+  </div>
+</header>
+
+<div class="context-bar">
+  <div class="context-inner">
+    <div class="ctx-stat"><span class="ctx-val">~3M</span><span class="ctx-label">Annual Forms</span></div>
+    <div class="ctx-sep"></div>
+    <div class="ctx-stat"><span class="ctx-val">93</span><span class="ctx-label">Jurisdiction Schemas</span></div>
+    <div class="ctx-sep"></div>
+    <div class="ctx-stat"><span class="ctx-val">2 days</span><span class="ctx-label">Baseline Cycle Time</span></div>
+    <div class="ctx-sep"></div>
+    <div class="ctx-stat"><span class="ctx-val">~1 hour</span><span class="ctx-label">Target Cycle Time</span></div>
+    <div class="ctx-sep"></div>
+    <div class="ctx-stat"><span class="ctx-val">70&ndash;85%</span><span class="ctx-label">Effort Reduction Target</span></div>
+    <div class="ctx-sep"></div>
+    <div class="ctx-stat"><span class="ctx-val">$5.7M</span><span class="ctx-label">Annual Savings (Tax TOM)</span></div>
+  </div>
+</div>
+
+
+
+<div class="step-rail" id="stepRail">
+  <button class="step-btn done active" data-step="1" onclick="showStep(1)"><div class="step-circle">01</div><span class="step-label">Discover</span></button>
+  <button class="step-btn done" data-step="2" onclick="showStep(2)"><div class="step-circle">02</div><span class="step-label">Define</span></button>
+  <button class="step-btn done" data-step="3" onclick="showStep(3)"><div class="step-circle">03</div><span class="step-label">Build</span></button>
+  <button class="step-btn done" data-step="4" onclick="showStep(4)"><div class="step-circle">04</div><span class="step-label">Contain</span></button>
+  <button class="step-btn done" data-step="5" onclick="showStep(5)"><div class="step-circle">05</div><span class="step-label">Evaluate</span></button>
+  <button class="step-btn pending" data-step="6" onclick="showStep(6)"><div class="step-circle">06</div><span class="step-label">Scale</span></button>
+  <button class="step-btn pending" data-step="7" onclick="showStep(7)"><div class="step-circle">07</div><span class="step-label">Operate</span></button>
+</div>
+
+<div class="detail-wrap"><div class="detail-panel" id="detailPanel"></div></div>
+
+<div class="foot-note">Framework: Gartner Agent Development Lifecycle (ADLC) 2026 &middot; McKinsey Five-Layer AI Measurement Framework Apr 2026 &middot; Risk tiering adapted from Citi 2LoD AI Governance 2025&ndash;26 &middot; Applied by Edgar Figueiredo</div>
+
+<script>
+var S=[
+{num:"01",phase:"Phase One",name:"Discover",tagline:"Map the reality, not the assumption.",
+desc:"Structured deep-dive into the current domain process before any AI consideration. Every manual step is documented, timed and quantified with the Operations team. The goal is to surface true pain points, available data assets and the stakeholder landscape. No technology decisions are made at this stage. At Citi Tax Operations this produced a baseline of 2 days per cycle across 93 jurisdiction schemas and approximately 3 million annual forms. That baseline made the business case defensible six months later.",
+biz:[{w:"Operations Team",t:"Document the AS-IS process step by step, including every manual touchpoint, handoff and exception path."},{w:"Business Director",t:"Articulate strategic pain points, risk exposure and the vision for what good looks like in measurable terms."},{w:"Finance",t:"Provide baseline cost data, FTE allocation per process and annual volume to anchor the business case."}],
+eng:[{w:"Not engaged in delivery yet",t:"Engineering is not involved at this stage. Involving them too early anchors the solution before the problem is fully understood."},{w:"Data team (initial assessment)",t:"Preliminary review of available data sources, format quality and technical feasibility of the proposed approach."}],
+head:[{w:"Facilitate discovery sessions",t:"Run structured workshops with the Business Director and Operations team. Listen first, diagnose second, recommend third."},{w:"Own the AS-IS document",t:"Produce a quantified process map: steps, volume, time, headcount and error rates. This document anchors every phase that follows."},{w:"Score and rank use cases",t:"Evaluate candidate AI interventions by business value, data readiness and implementation complexity before engaging engineering."},{w:"Brief Head of PMO and Head of Technology",t:"Share discovery findings with the engineering lead and set the context for the Define phase."}],
+kpis:[{v:"2 days",l:"Cycle time baseline",h:1},{v:"~3M",l:"Annual volume",h:1},{v:"93",l:"Jurisdiction schemas",h:0},{v:"Documented",l:"FTE hours per cycle",h:0},{v:"Documented",l:"Current error rate",h:0},{v:"Assessed",l:"Data readiness",h:0}],risk:0},
+
+{num:"02",phase:"Phase Two",name:"Define",tagline:"Agree what winning looks like before building anything.",
+desc:"Translate the discovered pain into a precise, falsifiable problem statement and value hypothesis with specific numbers attached. Success metrics are locked and signed off at Business Director level before any engineering resource is engaged. The business case is built here, not retrofitted later. This phase also includes formal AI risk classification: the use case receives its tier and human oversight designation before Build commences. Getting this wrong after deployment is far more costly than a two-day alignment before it.",
+biz:[{w:"Business Director",t:"Sign off on the value hypothesis and ROI target. Their name is on the business case, which creates shared accountability for the outcome."},{w:"Operations Lead",t:"Validate the feasibility of the proposed scope and confirm that the data and process access required for Build exist."},{w:"Finance",t:"Validate business case assumptions, model the payback period and confirm the cost baseline against which ROI will be measured."},{w:"Legal, Risk & Compliance",t:"Review the risk classification and confirm any governance obligations or approval requirements before engineering commences."}],
+eng:[{w:"Technology Architecture Review",t:"Confirm technical feasibility of the proposed agent approach, tooling selection and integration requirements."},{w:"Data Team",t:"Confirm data pipeline requirements, schema format, volume handling capacity and any data quality remediation needed before Build."}],
+head:[{w:"Author the value hypothesis",t:"Draft the precise, falsifiable claim: if the agent handles X, we expect Y outcome, worth Z per period. One document, one version, signed off."},{w:"Build and present the business case",t:"Present to Business Director with financial model, risk classification and scope definition. No engineering work begins without sign-off."},{w:"Lock the evidence gates",t:"Define the specific success thresholds for Contain and Evaluate phases. These gates cannot be moved retrospectively once Build commences."},{w:"Own the risk classification",t:"Classify the use case tier and human oversight designation. Present to Legal, Risk & Compliance where required. Document the outcome and approval on record."}],
+kpis:[{v:"2d\u21921hr",l:"Cycle time target agreed",h:1},{v:"70\u201385%",l:"Effort reduction target",h:1},{v:"95%+",l:"Accuracy threshold agreed",h:1},{v:"Phase 1",l:"Schema scope defined",h:0},{v:"Agreed",l:"ROI and payback period",h:0},{v:"Signed",l:"Business case status",h:0}],risk:1},
+
+{num:"03",phase:"Phase Three",name:"Build",tagline:"Build the minimum viable agent, not the final product.",
+desc:"Engineering builds the minimum viable agent scoped to the highest-value, highest-risk part of the workflow. Domain SMEs validate outputs against a known ground truth dataset of previously reviewed cases. The goal is a testable prototype in 2 to 4 weeks, not a production-ready system. Scope discipline is the Citi Program Manager's primary responsibility here. At Citi, the agent was built as an agentic validation pipeline and tested against a Tax SME ground truth dataset before any live exposure. At Planet, this phase would leverage the AWS Bedrock and Snowflake stack.",
+biz:[{w:"Domain SMEs / Process Experts",t:"Provide the ground truth validation dataset: cases already completed manually with known correct outputs. This is what engineering builds against."},{w:"Operations Lead",t:"Define edge cases, exception scenarios and domain-specific rules that engineering must handle in the agent logic."},{w:"Legal, Risk & Compliance",t:"Review the proposed output format and confirm audit trail and explainability requirements are captured in the build design."}],
+eng:[{w:"AI Engineers",t:"Build the core agent logic. At Citi: OCR pipeline and agentic validation using Claude and Gemini with structured prompt architecture."},{w:"Prompt Architecture",t:"Design, test and iterate the prompt structure against the domain SME ground truth dataset. Iterate until the accuracy threshold is met."},{w:"Evaluation Harness",t:"Build automated testing against the ground truth set to measure accuracy at each build iteration, not just at the end."}],
+head:[{w:"Define acceptance criteria",t:"Set the specific technical thresholds that must be met before the Contain phase opens. These are set in Define and are non-negotiable."},{w:"Act as translator",t:"Convert domain SME business logic and exception rules into precise engineering specifications without ambiguity or interpretation gaps."},{w:"Unblock engineering daily",t:"Resolve domain logic questions same day. Edgar is the first call when engineering hits a business question, not an escalation path."},{w:"Enforce scope discipline",t:"Reject any engineering additions outside the defined problem statement. Build first, enhance later. Scope creep kills delivery timelines."}],
+kpis:[{v:"95%+",l:"Accuracy on ground truth set",h:1},{v:"<2 min",l:"Processing time per case",h:1},{v:"100%",l:"Schema coverage (Phase 1)",h:0},{v:"Documented",l:"Edge case handling rate",h:0},{v:"Within",l:"Cost and latency guardrails",h:0},{v:"2\u20134 wks",l:"Build sprint target",h:0}],risk:0},
+
+{num:"04",phase:"Phase Four",name:"Contain",tagline:"Test in the real world, with the guardrails on.",
+desc:"Agent deployed to a small, defined cohort (5 to 15 people) within one Operations team or geography, running in parallel with the existing manual process. Real data. Real outcomes. Contained blast radius. Duration: 4 to 6 weeks. No new features during this phase. The only permitted engineering work is fixing failures discovered in live conditions. At Citi, parallel running with Tax Operations staff revealed real-world edge cases not present in the ground truth set. That is the point.",
+biz:[{w:"Pilot Operations Team",t:"Use the agent on live cases and complete the parallel manual process for direct comparison. Both outputs are logged and reconciled daily."},{w:"Domain SMEs",t:"Review agent outputs, flag discrepancies and document failure modes with full context. Their feedback is the primary data source for Evaluate."},{w:"Operations Lead",t:"Provide structured feedback on usability, workflow fit and adoption barriers. Operational friction is as important as accuracy data at this stage."}],
+eng:[{w:"Real-Time Monitoring",t:"Monitor agent performance, accuracy and error rates on live data continuously throughout the pilot. No blind spots between check-ins."},{w:"Edge Case Capture",t:"Log all real-world failures not present in the original test set. Each failure is a prompt refinement opportunity, not a problem to hide."},{w:"Fix Only",t:"No new features or enhancements during Contain. Stability and accuracy fidelity are the only acceptable engineering outputs at this stage."}],
+head:[{w:"Design the pilot parameters",t:"Define cohort size, geography, duration, parallel run protocol and data collection method before the pilot opens. No improvisation mid-flight."},{w:"Daily engagement with pilot team",t:"Brief daily check-in with the pilot cohort to capture qualitative feedback and surface blockers before they compound."},{w:"Own the evidence data",t:"Collect and structure all pilot data for the Evaluate phase. The data collected here is the business case. Treat it accordingly."},{w:"Weekly update to Business Director",t:"No surprises. One-page weekly progress note. Early escalation if results deviate materially from the hypothesis agreed in Define."}],
+kpis:[{v:"Parallel",l:"Agent vs manual comparison",h:1},{v:"~1 hour",l:"Cycle time in live environment",h:1},{v:"Tracked",l:"Exception escalation rate",h:0},{v:"Tracked",l:"Pilot team adoption rate",h:0},{v:"Tracked",l:"Acceptance vs override rate",h:0},{v:"Cost/case",l:"Pilot vs current baseline",h:0}],risk:0},
+
+{num:"05",phase:"Phase Five",name:"Evaluate",tagline:"Let the evidence make the decision, not the conviction.",
+desc:"Formal evaluation of all pilot data against the hypothesis agreed in Define. A Go / Scale / Stop recommendation is prepared by the Citi Program Manager and presented to the Business Director with a full evidence pack. The recommendation belongs to the Citi Program Manager. The decision to proceed belongs to the Business Director. This separation is deliberate. It means the evidence is presented without commercial pressure, and accountability for the outcome is shared and on record. If the evidence does not support scaling, that recommendation is made clearly.",
+biz:[{w:"Business Director and Finance",t:"Receive and review the evidence pack. Validate that the financial case holds against the original assumptions agreed in Define."},{w:"Legal, Risk & Compliance",t:"Confirm governance requirements are met, audit trail is complete and agent outputs are defensible under applicable obligations."},{w:"Operations Lead",t:"Validate the operational conclusions and confirm the team is prepared for scaled rollout from a process and people perspective."}],
+eng:[{w:"Performance Analysis",t:"Technical assessment of agent behaviour in live conditions versus the prototype benchmarks set in Build."},{w:"Scaling Feasibility",t:"Confirm that infrastructure can support full-scale deployment without accuracy degradation or latency issues at volume."},{w:"Failure Mode Assessment",t:"Document every failure mode observed in Contain and the mitigation proposed for each. No failures are omitted from the record."}],
+head:[{w:"Author the evaluation report",t:"What was measured, what the results showed, what the recommendation is, and the evidence behind each conclusion. One document."},{w:"Present the recommendation",t:"Go, Scale or Stop, with data. Not with enthusiasm. The recommendation stands even if it is unwelcome."},{w:"Name every failure mode",t:"Each failure observed in Contain is named in the report with a mitigation plan. Transparency here builds long-term trust with the Business Director."},{w:"Obtain formal sign-off",t:"Business Director signs off on the Go decision before Scale commences. The decision and its evidence are on record."}],
+kpis:[{v:"Actual",l:"Cycle time vs 1-hour target",h:1},{v:"Actual",l:"Effort reduction vs 70\u201385%",h:1},{v:"Actual",l:"Accuracy vs 95% threshold",h:1},{v:"Actual",l:"Adoption rate in pilot cohort",h:0},{v:"Actual",l:"Cost per case vs target",h:0},{v:"GO",l:"Recommendation: Scale",h:1}],risk:0},
+
+{num:"06",phase:"Phase Six",name:"Scale",tagline:"Earn the right to scale at each gate. Then grow deliberately.",
+desc:"Citi Arc is the designated agentic capability for scale; the agent interface is currently in development. This phase is pending and will activate once Citi Arc is ready for production. Planned as phased rollout across Operations teams and geographies with explicit evidence gates between each phase. Not a big-bang release. Each gate requires KPI confirmation before the next phase opens. Engineering focus shifts from accuracy to performance at load and adoption at breadth. At Citi, the Tax validation agent expanded from a single pilot cohort to multiple Tax Operations teams globally, with a gate review required before each expansion.",
+biz:[{w:"Operations Teams (phased)",t:"Phased onboarding across teams and geographies. Each cohort receives structured training and a designated champion from within the team."},{w:"Finance",t:"Track realised savings against the business case at each scale gate. The business case is a living document updated at every gate."},{w:"Change Management",t:"Adoption programme, role impact communications and manager enablement for each new cohort. Adoption does not happen by announcement."},{w:"Legal, Risk & Compliance",t:"Regulatory monitoring as scope expands to additional jurisdictions or geographies with different compliance obligations."}],
+eng:[{w:"Infrastructure Scaling",t:"Confirm performance and accuracy under increased load at each scale gate. Pass the gate criteria, then expand. Not before."},{w:"Monitoring at Scale",t:"Automated alerting for accuracy degradation or processing anomalies across the expanded cohort. One dashboard, all teams."},{w:"Coverage Expansion",t:"Roll remaining jurisdiction schemas or domain variants into coverage as each scale gate is passed and confirmed."}],
+head:[{w:"Own and enforce gate criteria",t:"Define the specific KPI thresholds that must be met before each scale phase opens. Gates are decision points, not formalities."},{w:"Cross-domain portfolio view",t:"Ensure this domain's scale phase does not compete with other domain initiatives for engineering capacity across teams. This view belongs exclusively to Edgar."},{w:"Gate reporting to Business Director",t:"Concise update at each gate: KPI actuals vs targets, any variance, recommendation for next phase. The Business Director should never be surprised."},{w:"Resolve blockers",t:"Data issues, schema gaps, adoption resistance. Every blocker is Edgar's responsibility to resolve or escalate. It does not sit with the Operations team."}],
+kpis:[{v:"Weekly",l:"Total cases processed by agent",h:1},{v:"Cumulative",l:"FTE hours redeployed",h:1},{v:"Maintained",l:"Accuracy vs pilot benchmark",h:1},{v:"Tracked",l:"Adoption rate across all teams",h:0},{v:"Realised",l:"Savings vs business case",h:0},{v:"Per gate",l:"Go / Hold cadence",h:0}],risk:0},
+
+{num:"07",phase:"Phase Seven \u00b7 Ongoing",name:"Operate",tagline:"An AI agent is never done. It is a product you run.",
+desc:"Pending activation of the Citi Arc agent interface, which will provide the monitoring, drift detection and governance infrastructure required for this phase. Once live, the agent transitions from an initiative to a monitored operational system. This is the phase most AI programmes deprioritise and where most value is quietly lost. Ongoing monitoring, drift detection, structured performance reporting and controlled evolution define the difference between an AI programme that compounds and one that degrades. Gartner finds that 45% of high-maturity organisations keep AI initiatives in production for 3+ years versus 20% of low-maturity organisations. That sustained operation is where the ROI accumulates.",
+biz:[{w:"Operations Teams",t:"Ongoing users of the agent. Report anomalies through a defined feedback channel. Ad hoc reporting is not a feedback system."},{w:"Finance",t:"Quarterly ROI reconciliation against the original business case. Savings are auditable numbers, not estimates."},{w:"Legal, Risk & Compliance",t:"Periodic audit of agent outputs, decision trail completeness and compliance with obligations as they evolve over time."},{w:"Business Director",t:"Quarterly business review: AI performance vs agreed targets, emerging use cases in the domain, forward investment decision."}],
+eng:[{w:"ModelOps",t:"Ongoing monitoring dashboard with automated drift detection and performance trend tracking. No manual checks between reviews."},{w:"Retraining Triggers",t:"Defined accuracy thresholds that automatically flag a model review and trigger a retraining sprint. Set in Define, not discovered in production."},{w:"Incident Response",t:"Documented protocol for agent failure or unexpected output. Response time within agreed SLA. No improvised escalation paths."},{w:"Improvement Pipeline",t:"Validated enhancements queued, governed and released in controlled cycles. Every change goes through the same gate logic as the original build."}],
+head:[{w:"Own the quarterly review",t:"Author and present the quarterly AI performance report to the Business Director. Data-led, outcome-framed, forward-looking."},{w:"Trigger engineering reviews",t:"When KPIs show degradation, Edgar initiates an engineering review before the Business Director asks. Proactive, not reactive."},{w:"Surface cross-domain insights",t:"Operational data from this deployment informs the next AI initiative in this domain and in adjacent domains. Edgar holds the pattern."},{w:"Identify reusability",t:"Which components of this agent can be reused across Commercial, Operations, Legal Risk & Compliance, PMS or Hospitality? Document and share the blueprint with Head of PMO and Head of Technology."}],
+kpis:[{v:"Monthly",l:"Rolling accuracy vs threshold",h:1},{v:"Automated",l:"Drift detection and alerting",h:1},{v:"Tracked",l:"Exception escalation trend",h:0},{v:"99.X%",l:"System availability target",h:0},{v:"Quarterly",l:"Savings reconciled vs case",h:1},{v:"Quarterly",l:"FTE redeployment to SVP",h:0}],risk:0}
+];
+
+function bItems(arr,cls){
+  return arr.map(function(i){return'<li><strong>'+i.w+'</strong>'+i.t+'</li>'}).join('');
+}
+
+function riskBlock(){
+  return '<div class="risk-section">'
+    +'<div class="risk-heading">AI Risk Classification &middot; Applied Before Build Commences</div>'
+    +'<div class="tier-row">'
+    +'<div class="tier-chip t3"><span class="tier-num">Tier 3</span><span class="tier-name">Individual Productivity</span><span class="tier-action">No review needed</span></div>'
+    +'<div class="tier-chip t2"><span class="tier-num">Tier 2</span><span class="tier-name">Business Unit Tool</span><span class="tier-action">Register as preset &middot; No risk panel</span></div>'
+    +'<div class="tier-chip t1a"><span class="tier-num">Tier 1</span><span class="tier-name">Business-Critical Agent</span><span class="tier-action">Business Director approval required</span><span class="tier-this">This use case</span></div>'
+    +'</div>'
+    +'<div class="oversight-row">'
+    +'<div class="ov-chip"><span class="ov-name">Human-in-the-Loop</span><span class="ov-desc">Human reviews AI output before any action is taken</span></div>'
+    +'<div class="ov-chip ov-on"><span class="ov-name">Human-on-the-Loop</span><span class="ov-desc">Agent acts autonomously; human reviews exceptions before submission</span><span class="ov-applied">&larr; Applied to this use case</span></div>'
+    +'<div class="ov-chip ov-out"><span class="ov-name">Human-out-of-the-Loop</span><span class="ov-desc">Fully autonomous &middot; Not permitted for Tier 1 use cases</span></div>'
+    +'</div>'
+    +'<div class="risk-rationale"><strong>Classification rationale:</strong> This use case processes regulatory financial data across 93 jurisdictions with direct FATCA/CRS reporting obligations. Errors carry regulatory, financial and reputational consequences. Classification: <strong>Tier 1</strong>. Human oversight: <strong>Human-on-the-Loop</strong> &mdash; the agent processes and validates autonomously; Domain SMEs review exception cases before any regulatory submission. Formal sign-off from Business Director required before Build commences.</div>'
+    +'</div>';
+}
+
+function showStep(n){
+  var s=S[n-1];
+  document.querySelectorAll('.step-btn').forEach(function(b){
+    b.classList.remove('active');
+    if(parseInt(b.getAttribute('data-step'))===n) b.classList.add('active');
+  });
+
+  var kHtml=s.kpis.map(function(k){
+    return '<div class="kpi-chip'+(k.h?' highlight':'')+'"><span class="kpi-val">'+k.v+'</span><span class="kpi-label">'+k.l+'</span></div>';
+  }).join('');
+
+  var status=n>=6
+    ?'<div class="panel-status" style="color:var(--gold);">&#9679;&nbsp;Pending &middot; Citi Arc agent interface</div>'
+    :'<div class="panel-status" style="color:rgba(255,255,255,.36);">&#10003;&nbsp;Completed at Citi</div>';
+
+  document.getElementById('detailPanel').innerHTML=
+    '<div class="panel-header">'
+    +'<div class="panel-num">'+s.num+'</div>'
+    +'<div class="panel-title-block">'
+    +'<div class="panel-phase">'+s.phase+'</div>'
+    +'<div class="panel-title">'+s.name+'</div>'
+    +'<div class="panel-tagline">'+s.tagline+'</div>'
+    +status
+    +'<p class="panel-desc">'+s.desc+'</p>'
+    +'</div></div>'
+
+    +'<div class="panel-cols">'
+    +'<div class="col-block col-biz"><div class="col-header"><span class="col-dot dot-biz"></span><span class="col-name">Business &amp; Operations</span></div><ul class="col-items">'+bItems(s.biz)+'</ul></div>'
+    +'<div class="col-block col-eng"><div class="col-header"><span class="col-dot dot-eng"></span><span class="col-name">Engineering Team</span></div><ul class="col-items">'+bItems(s.eng)+'</ul></div>'
+    +'<div class="col-block col-head"><div class="col-header"><span class="col-dot dot-ai"></span><span class="col-name">Edgar &middot; SVP, Citi</span></div><ul class="col-items">'+bItems(s.head)+'</ul></div>'
+    +'</div>'
+
+    +'<div class="kpi-section"><div class="kpi-heading">KPIs Measured at This Phase</div><div class="kpi-grid">'+kHtml+'</div></div>'
+
+    +(s.risk?riskBlock():'')
+
+    +'<div class="panel-nav">'
+    +'<button class="nav-btn" onclick="showStep('+(n-1)+')" '+(n===1?'disabled':'')+'>&larr; Previous</button>'
+    +'<span class="nav-progress">Step '+n+' of 7</span>'
+    +'<button class="nav-btn" onclick="showStep('+(n+1)+')" '+(n===7?'disabled':'')+'> Next &rarr;</button>'
+    +'</div>';
+}
+showStep(1);
+</script>
 </body>
 </html>
